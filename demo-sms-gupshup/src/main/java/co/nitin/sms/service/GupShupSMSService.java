@@ -12,7 +12,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import co.nitin.sms.config.UserPropsMapper;
@@ -20,7 +19,7 @@ import co.nitin.sms.config.UserPropsMapper;
 @Service
 public class GupShupSMSService {
 
-	Logger log =  LoggerFactory.getLogger(GupShupSMSService.class);
+	private Logger log =  LoggerFactory.getLogger(GupShupSMSService.class);
 	private UserPropsMapper propsMapper;
 	
 	@Autowired
@@ -30,7 +29,7 @@ public class GupShupSMSService {
 
 	public String sendSimpleSMS(String message, List<Long> phoneNos, String[] apiVar) throws IOException {
 		
-		log.info("[sendSMS]");
+		log.info("[sendSimpleSMS]");
 		
 		String messageBody = this.messageBodyFormatter(message, phoneNos, apiVar);
 		
@@ -56,31 +55,34 @@ public class GupShupSMSService {
 		return buffer.toString();
 	}
 	
-	private String messageBodyFormatter(String message, List<Long> phoneNos, String[] apiVar) throws UnsupportedEncodingException {
-
-		String data = "";
-		data += "method=sendMessage";
-		data += "&userid=" 		+ this.propsMapper.getId(); // your loginId
-		data += "&password=" 	+ URLEncoder.encode(this.propsMapper.getPassword(), "UTF-8"); // your password
-		data += "&msg=" 		+ URLEncoder.encode(message , "UTF-8");
-		data += "&send_to=" 	+ URLEncoder.encode( this.recepientNumberFormatter(phoneNos) , "UTF-8"); // a valid 10 digit phone no.
-		data += "&v=" 			+ apiVar[0];
-		data += "&format=" 		+ apiVar[1];
-		data += "&msg_type=" 	+ apiVar[2]; // Can by "FLASH" or "UNICODE_TEXT" or “BINARY”
-		data += "&auth_scheme=" + apiVar[3];
+	protected String messageBodyFormatter(String message, List<Long> phoneNos, String[] apiVar) throws UnsupportedEncodingException {
+	
+		log.info("[messageBodyFormatter]");
 		
-		return data;
+		StringBuilder msg= new StringBuilder();
+		msg.append("method=sendMessage");
+		msg.append("&userid=" 		+ this.propsMapper.getId()); // your loginId
+		msg.append("&password=" 	+ URLEncoder.encode(this.propsMapper.getPassword(), "UTF-8")); // your password
+		msg.append("&msg=" 			+ URLEncoder.encode(message , "UTF-8"));
+		msg.append("&send_to=" 		+ URLEncoder.encode( this.recepientNumberFormatter(phoneNos) , "UTF-8")); // a valid 10 digit phone no.
+		msg.append("&v=" 			+ apiVar[0]);
+		msg.append("&format=" 		+ apiVar[1]);
+		msg.append("&msg_type=" 	+ apiVar[2]); // Can by "FLASH" or "UNICODE_TEXT" or “BINARY”
+		msg.append("&auth_scheme=" 	+ apiVar[3]);
+		
+		return msg.toString();
 	}
 	
-	private String recepientNumberFormatter(List<Long> phoneNo) {
+	protected String recepientNumberFormatter(List<Long> phoneNo) {
+		
+		log.info("[recepientNumberFormatter]");
 		
 		int size = phoneNo.size();
 		StringBuilder builder = new StringBuilder();
 		
 		for(int i=0; i<size; i++) 
 			builder.append(phoneNo.get(i)).append(",");
-
-		builder.deleteCharAt(builder.capacity());
+		builder.deleteCharAt(builder.length()-1);		
 		
 		return builder.toString();
 	}
