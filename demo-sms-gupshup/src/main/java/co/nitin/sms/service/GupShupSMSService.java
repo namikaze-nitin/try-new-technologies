@@ -1,4 +1,4 @@
-package co.nitin.sms.controller;
+package co.nitin.sms.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class GupShupSMSService {
 		this.propsMapper = mapper;
 	}
 
-	public String sendSMS(String message, List<Long> phoneNos, String[] apiVar) throws IOException {
+	public String sendSimpleSMS(String message, List<Long> phoneNos, String[] apiVar) throws IOException {
 		
 		log.info("[sendSMS]");
 		

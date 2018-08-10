@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @author Nitin Sharma
  *
  */
-@PropertySource("classpath:smsprovider.properties")
+@PropertySource("classpath:sms.properties")
 @ConfigurationProperties(prefix = "user")
 @Component
 public class UserPropsMapper {
