@@ -1,10 +1,14 @@
 package co.nitin.sms.service;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +53,6 @@ public class TestSimpleSMS {
 		number.add(8209163590L);
 		Assert.assertEquals(service.recepientNumberFormatter(number),"9870453104,8209163590");
 
-		System.out.println(mapper);
 		String[] var = {"1.1","json","TEXT","PLAIN"};
 		String msgBody = service.messageBodyFormatter("Hello!!!", number, var);
 //		System.out.println(service.messageBodyFormatter("Hello!!!", number, var));
@@ -68,4 +71,19 @@ public class TestSimpleSMS {
 		Assert.assertEquals(msgBody, data);
 	}
 	
+	@Test
+	public void sendSimpleSMS() throws IOException, JSONException {
+		
+		GupShupSMSService service = new GupShupSMSService(mapper);
+		
+		List<Long> number = new ArrayList<Long>();
+		number.add(9870453104L);
+		number.add(8209163590L);
+		
+		String[] var = {"1.1","json","TEXT","PLAIN"};
+		String response = service.sendSimpleSMS("Hello!!!", number, var);
+		
+		JSONObject resp = (JSONObject) new JSONObject(response).get("response");
+		Assert.assertEquals(resp.get("status"), "success");
+	}
 }
