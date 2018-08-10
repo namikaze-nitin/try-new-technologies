@@ -1,7 +1,7 @@
 # `demo-sms-gupshup`
 * Module to test services provided GupShup SMS Service providers.
 * [Website Link](http://enterprise.smsgupshup.com/)
-* [Reference Docs](http://enterprise.smsgupshup.com/help/in/index.html
+* [Reference Docs](http://enterprise.smsgupshup.com/help/in/index.html)
 
 ## How to run
 * Create an account with GupShup SMS Service provider from [here](http://enterprise.smsgupshup.com/dashboard)
