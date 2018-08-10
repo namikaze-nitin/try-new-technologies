@@ -53,11 +53,13 @@ public class GupShupSMSService {
 	 * @return String : url format String that will be attached to GupShup API url and then sent.
 	 * @throws UnsupportedEncodingException
 	 */
-	public String sendSimpleSMS(String message, List<Long> phoneNos, String[] apiVar) throws IOException {
+	public String sendSimpleSMS(String message, List<Long> phones, String[] apiVar) throws IOException {
+		
+		if(phones.size()==0) return "{\"response\" : \"error\"}";
 		
 		log.info("[sendSimpleSMS]");
 		
-		String messageBody = this.messageBodyFormatter(message, phoneNos, apiVar);
+		String messageBody = this.messageBodyFormatter(message, phones, apiVar);
 		
 		URL url = new URL("http://enterprise.smsgupshup.com/GatewayAPI/rest?" + messageBody);
 
