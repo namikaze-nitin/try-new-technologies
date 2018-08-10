@@ -16,6 +16,12 @@ import org.springframework.stereotype.Service;
 
 import co.nitin.sms.config.UserPropsMapper;
 
+/**
+ * Service class handling single or multiple recipient for a single message.
+ * 
+ * @author Nitin Sharma
+ *
+ */
 @Service
 public class GupShupSMSService {
 
@@ -26,7 +32,27 @@ public class GupShupSMSService {
 	public GupShupSMSService(UserPropsMapper mapper) {
 		this.propsMapper = mapper;
 	}
-
+	
+	/**
+	 * Method handling message sending.
+	 * 
+	 * We will be needing a array of variables that will be sent along with the url to api. Structure :
+	 * </br>
+	 * 1) apiVar[0] : version of gupshup api being used : currently "1.1"
+	 * </br>
+	 * 2) apiVar[1] : format of message : TEXT, XML, JSON
+	 * </br>
+	 * 3) apiVar[2] : type of message : Text, Unicode_text, or flash, VCARD, binary
+	 * </br>
+	 * 4) apiVar[3] : authentication scheme : "PLAIN"(only this supported right now)
+	 * </br>
+	 * 
+	 * @param message : actual message to be delivered.
+	 * @param phoneNos : list of phone numbers.
+	 * @param apiVar : String[] : consisting of params needed in api-url.
+	 * @return String : url format String that will be attached to GupShup API url and then sent.
+	 * @throws UnsupportedEncodingException
+	 */
 	public String sendSimpleSMS(String message, List<Long> phoneNos, String[] apiVar) throws IOException {
 		
 		log.info("[sendSimpleSMS]");
@@ -55,6 +81,26 @@ public class GupShupSMSService {
 		return buffer.toString();
 	}
 	
+	/**
+	 * Method to provide String with required params for message delivery.
+	 * </br>
+	 * We will be needing a array of variables that will be sent along with the url to api. Structure :
+	 * </br>
+	 * 1) apiVar[0] : version of gupshup api being used : currently "1.1"
+	 * </br>
+	 * 2) apiVar[1] : format of message : TEXT, XML, JSON
+	 * </br>
+	 * 3) apiVar[2] : type of message : Text, Unicode_text, or flash, VCARD, binary
+	 * </br>
+	 * 4) apiVar[3] : authentication scheme : "PLAIN"(only this supported right now)
+	 * </br>
+	 * 
+	 * @param message : actual message to be delivered.
+	 * @param phoneNos : list of phone numbers.
+	 * @param apiVar : String[] : consisting of params needed in api-url.
+	 * @return String : url format String that will be attached to GupShup API url and then sent.
+	 * @throws UnsupportedEncodingException
+	 */
 	protected String messageBodyFormatter(String message, List<Long> phoneNos, String[] apiVar) throws UnsupportedEncodingException {
 	
 		log.info("[messageBodyFormatter]");
@@ -73,6 +119,13 @@ public class GupShupSMSService {
 		return msg.toString();
 	}
 	
+	/**
+	 * Method to convert list of phone numbers into comma separated string.
+	 * 
+	 * @param phoneNo : list of phone numbers
+	 * @return String : comma separated phone numbers
+	 * @author Nitin Sharma
+	 */
 	protected String recepientNumberFormatter(List<Long> phoneNo) {
 		
 		log.info("[recepientNumberFormatter]");
