@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +72,8 @@ public class TestSimpleSMS {
 	
 	@Test
 	public void sendSimpleSMS() throws IOException, JSONException {
+		
+		log.info("[sendSimpleSMS]");
 		
 		GupShupSMSService service = new GupShupSMSService(mapper);
 		
